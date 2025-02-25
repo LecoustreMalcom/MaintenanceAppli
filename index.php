@@ -1,6 +1,5 @@
 <?php
 include 'header.php';
-
 ?>
 
 <!DOCTYPE html>
@@ -14,6 +13,7 @@ include 'header.php';
         <h1>BONJOUR</h1>
 
         <?php
+            // Vérifie si un utilisateur est connecté
             if (isset($_SESSION['utilisateur'])) {
                 $utilisateur = $_SESSION['utilisateur'];
         ?>

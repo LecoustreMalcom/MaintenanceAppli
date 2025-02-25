@@ -6,32 +6,44 @@ session_start();
 
 $err = "";
 
+// Fonction pour vérifier les informations de connexion
 function verify(string $pass, string $usr): bool{
     global $err;
 
     $db = require 'bdd.php';
+    
+    // Prépare une requête SQL pour sélectionner l'utilisateur avec l'identifiant donné
     $sql = "SELECT * FROM utilisateur WHERE identifiant=:usr";
 
     $result = $db->prepare($sql);
     $result->execute(["usr" => $usr]);
 
+    // Récupère les données de l'utilisateur
     $data = $result->fetch();
+    
+    // Vérifie si les données existent et si le mot de passe correspond
     if($data && $pass == $data->mot_de_passe){
+        // Si les informations sont correctes, initialise la session utilisateur
         $_SESSION['utilisateur'] = $usr;
         return true;
     }
 
+    // Message d'erreur
     $err = "Identifiant ou mot de passe incorrect";
     return false;
 }
 
+// Vérifie si le formulaire de connexion a été soumis
 if(isset($_POST['connexion'])){
     $usrname = $_POST["usrname"];
     $pass = $_POST["pass"];
+    
+    // Vérifie les informations de connexion
     $acces = verify($pass, $usrname);
 
+    // Si les informations sont correctes, redirige vers la page d'accueil
     if($acces){
-        header('Location: index.php');
+        header('Location: accueil.php');
         exit();
     }
 }
